@@ -17,23 +17,21 @@ while len(guessed_states) < len(all_states):
     answer_state = screen.textinput(title=f"{len(guessed_states)}/50 States Correct.",
                                     prompt="What's another state's name?").title()
     if answer_state.title() == "Exit":
-        missing_state = []
-        for state in all_states:
-            if state not in guessed_states:
-                missing_state.append(state)
-        # print(len(missing_state))
-        new_data = pd.DataFrame(missing_state)
+        new_data = pd.DataFrame(all_states)
         new_data.to_csv("states_to_learn.csv")
         break
 
     if answer_state in all_states:
         guessed_states.append(answer_state)
+        all_states.remove(answer_state)
         t = turtle.Turtle()
         t.hideturtle()
         t.penup()
         state_data = data[data.state == answer_state]
         t.goto(state_data.x.item(), state_data.y.item())
         t.write(answer_state, font=("Arial", 9, "bold"))
+
+print(guessed_states)
 
 
 screen.exitonclick()
